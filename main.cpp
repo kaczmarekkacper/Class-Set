@@ -12,10 +12,11 @@ int main()
     int sizeA, sizeB;
     int option = 0;
     long double element;
-    volatile bool conditions = ( reinterpret_cast<int> (option) < 14 && reinterpret_cast<int> (option) > 0 ) ;
+    volatile bool conditions = ( reinterpret_cast<int> (option) < 14 && reinterpret_cast<int> (option) > 0 );
+    // warunek kontynuowania petli
     cout << "How many element should Set A contain? ";
     cin >> sizeA;
-    while ( cin.fail() )
+    while ( cin.fail() ) // jesli zle wpisane dane
     {
         cout << "Wrong value." << endl;
         cin.clear();
@@ -23,8 +24,8 @@ int main()
         cout << "How many element should Set A contain? ";
         cin >> sizeA;
     }
-    cin.ignore( 1000, '\n' );
-    Set A( sizeA );
+    cin.ignore( 1000, '\n' ); // jesli wpisane tylko czesciowo dobrze np. ( 1.22)
+    Set A( sizeA ); // Tworzy klase zbior
     cout << "How many element should Set B contain? ";
     cin >> sizeB;
     while ( cin.fail() )
@@ -36,8 +37,8 @@ int main()
         cin >> sizeB;
     }
     cin.ignore( 1000, '\n' );
-    Set B( sizeB );
-    Set C( sizeA+sizeB );
+    Set B( sizeB ); // druga klasa
+    Set C( A.check_size( ) + B.check_size() ); // klasa ktora moze powstac w wyniku dzialan maksymalnie moze zawierac tyle ile dwa zbiory razem razem
     do
     {
         cout << "What do you want to do with Sets?" << endl;
@@ -214,9 +215,6 @@ int main()
             cout << "Choose right option." << endl;
         }
     }
-    while ( !conditions );
-    A.delete_set();
-    B.delete_set();
-    C.delete_set();
+    while ( !conditions ); // petla wykonuje sie dopoki 1 <= option < 14
     return 0;
 }

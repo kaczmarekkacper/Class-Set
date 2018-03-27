@@ -12,6 +12,10 @@ using namespace std;
         element = new long double[ number ];
         size = number;
     }
+    Set::~Set()
+    {
+        delete[] element;
+    }
     bool Set::add ( long double new_element )
     {
         if ( size > first_free_index )
@@ -46,7 +50,7 @@ using namespace std;
         return already_added;
     }
 
-    bool Set::check ( long double new_element )
+    bool Set::check ( long double new_element ) const
     {
         if ( first_free_index )
         {
@@ -59,15 +63,15 @@ using namespace std;
         return false;
     }
 
-    int Set::amount ( void )
+    int Set::amount ( ) const
     {
         return first_free_index;
     }
-    int Set::check_size ( void )
+    int Set::check_size ( ) const
     {
         return size;
     }
-    int Set::same_objects ( Set B )
+    int Set::same_objects ( Set const &B )
     {
         int how_many=0;
         for ( int i = 0 ; i < B.first_free_index ; i++ )
@@ -76,7 +80,7 @@ using namespace std;
         return how_many;
     }
 
-    Set Set::operator+ ( Set B )
+    Set Set::operator+ ( Set const &B )
     {
         Set C( amount() + B.amount() - same_objects( B ) );
         for ( int i = 0 ; i < first_free_index ; i++ )
@@ -85,7 +89,7 @@ using namespace std;
             C.add( B.element[i] );
         return C;
     }
-    Set Set::operator+= ( Set B )
+    Set Set::operator+= ( Set const &B )
     {
         if ( size >= amount() + B.amount() )
         {
@@ -94,7 +98,7 @@ using namespace std;
         }
         return *this;
     }
-    Set Set::operator- ( Set B )
+    Set Set::operator- ( Set const &B )
     {
         Set C( ( amount()>B.amount() ? amount() : B.amount() ) - same_objects( B ) );
         for ( int i = 0 ; i < first_free_index ; i++)
@@ -104,7 +108,7 @@ using namespace std;
         }
         return C;
     }
-    Set Set::operator-= ( Set B )
+    Set Set::operator-= ( Set const &B )
     {
 
         for ( int i = 0 ; i < B.first_free_index ; i++)
@@ -112,7 +116,7 @@ using namespace std;
                 remove( B.element[i] );
         return *this;
     }
-    Set Set::operator* ( Set B )
+    Set Set::operator* ( Set const &B )
     {
         Set C( same_objects( B ) );
         for ( int i = 0 ; i < B.first_free_index ; i++)
@@ -120,7 +124,7 @@ using namespace std;
                 C.add ( B.element[i] );
         return C;
     }
-    Set Set::operator*= ( Set B )
+    Set Set::operator*= ( Set const &B )
     {
 
         for ( int i = 0 ; i < first_free_index ; i++)
@@ -130,7 +134,7 @@ using namespace std;
         }
         return *this;
     }
-    bool Set::operator== ( Set B )
+    bool Set::operator== ( Set const &B )
     {
         for ( int i = 0 ; i < B.first_free_index ; i++ )
         {
@@ -146,11 +150,11 @@ using namespace std;
         }
         return true;
     }
-    bool Set::operator!= ( Set B)
+    bool Set::operator!= ( Set const &B )
     {
         return !( *this == B );
     }
-    Set Set::operator= ( Set B )
+    void Set::operator= ( Set const &B )
     {
         if ( size >= B.amount() )
         {
@@ -158,11 +162,6 @@ using namespace std;
             for ( int i = 0 ; i < B.amount() ; i++ )
             add( B.element[i] );
         }
-        return B;
-    }
-    void Set::delete_set ( )
-    {
-        delete[] element;
     }
     ostream& operator<<( ostream &stream, Set &B )
     {
